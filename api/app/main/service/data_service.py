@@ -2,7 +2,7 @@ import pandas as pd
 from random import randrange
 import datetime
 
-from app.main.util.data_vm import DataVM
+from app.main.util.data_vm import DataVM, OutliersVM
 
 ORIGINAL_FILE_PATH = 'D:\keppler-classifier\keppler-data.csv'
 PREPARED_FILE_PATH = 'D:\keppler-classifier\keppler-data-prepared.csv'
@@ -147,3 +147,28 @@ def fill_empty_cells(df):
     df.dec.fillna(df.dec.mean(), inplace=True)
     df.koi_kepmag.fillna(df.koi_kepmag.mean(), inplace=True)
     return df
+    
+def detect_outliers():
+    df =  pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
+    df.drop([
+        'kepid',
+        'koi_disposition',
+        'kepoi_name', 
+        'kepler_name', 
+        ], 
+        axis=1, inplace=True)
+    counter = 0
+    for attr in df.columns:
+        data = df[attr]
+        q1 = float(data.quantile(0.25))
+        q3 = float(data.quantile(0.75))
+
+        iqr = q3 - q1
+
+        lower_range = q1 - 1.5 * iqr
+        upper_range = q3 + 1.5 * iqr
+
+        for val in data:
+            if val < lower_range or val > upper_range:
+                counter = counter + 1
+    return OutliersVM(counter, round(float(counter / len(df)), 2))

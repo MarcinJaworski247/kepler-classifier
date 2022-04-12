@@ -27,3 +27,8 @@ class DataDTO:
         'dec': fields.Float(required=True, description=''),
         'koi_kepmag': fields.Float(required=True, description='')
     })
+
+    outliers = api.model('outliers', {
+        'count': fields.Integer(required=True),
+        'percentage': fields.Float(required=True)
+    })

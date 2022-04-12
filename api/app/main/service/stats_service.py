@@ -7,8 +7,6 @@ from app.main.util.stats_vm import StatsVM
 def get_description_stats():
     df = get_data_frame()
     result = []
-    print("--------------------------")
-    print(df.columns)
     for col in df.columns:
         result.append(StatsVM(
             _attribute = col,

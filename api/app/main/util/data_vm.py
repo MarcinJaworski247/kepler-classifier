@@ -26,7 +26,7 @@ class DataVM:
         ra,
         dec,
         koi_kepmag
-        ):
+    ):
         self.kepid = kepid
         self.kepoi_name = kepoi_name
         self.kepler_name = kepler_name

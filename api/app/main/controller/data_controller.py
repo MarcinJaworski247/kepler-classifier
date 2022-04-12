@@ -1,7 +1,6 @@
-from flask import request
 from flask_restx import Resource
 
-from ..util.dto import DataDTO
+from ..util.data_dto import DataDTO
 from ..service.data_service import get_prepared_data
 
 api = DataDTO.api

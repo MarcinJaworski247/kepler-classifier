@@ -1,9 +1,8 @@
 import pandas as pd
 from random import randrange
 import datetime
-import json
 
-from app.main.util.vm import DataVM
+from app.main.util.data_vm import DataVM
 
 ORIGINAL_FILE_PATH = 'D:\keppler-classifier\keppler-data.csv'
 PREPARED_FILE_PATH = 'D:\keppler-classifier\keppler-data-prepared.csv'
@@ -97,6 +96,11 @@ def get_prepared_data():
     for item in list_of_objects:
         item = item.to_json()
     return list_of_objects
+
+def get_data_frame():
+    df = pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
+    df.drop(['kepid', 'kepoi_name', 'kepler_name', 'koi_disposition'], axis=1, inplace=True)
+    return df
 
 def delete_candidates(df):
     df = df[df.koi_disposition != "CANDIDATE"]

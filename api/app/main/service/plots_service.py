@@ -1,5 +1,5 @@
 from app.main.service.data_service import get_data_frame
-from app.main.util.plots.values_vm import  ValuesVM
+from app.main.util.plots.values_vm import ValuesVM
 from app.main.util.plots.pearson_corr_vm import PearsonCorrVM
 
 
@@ -15,19 +15,20 @@ def get_pearson_corr():
         data = []
 
         for val in correlations[col].values:
-            data.append({'x': '', 'y': round(val, 4)})
+            data.append({"x": "", "y": round(val, 4)})
 
         for i in range(0, len(data)):
-            data[i]['x'] = columns[i]
+            data[i]["x"] = columns[i]
 
         result.append(PearsonCorrVM(name, data))
 
     return result
+
 
 def get_values():
     df = get_data_frame()
     result = []
     for col in df.columns:
         result.append(ValuesVM(col, df[col].values))
-    
+
     return result

@@ -4,8 +4,8 @@ import datetime
 
 from app.main.util.data_vm import DataVM, OutliersVM
 
-ORIGINAL_FILE_PATH = 'D:\keppler-classifier\keppler-data.csv'
-PREPARED_FILE_PATH = 'D:\keppler-classifier\keppler-data-prepared.csv'
+ORIGINAL_FILE_PATH = "D:\keppler-classifier\keppler-data.csv"
+PREPARED_FILE_PATH = "D:\keppler-classifier\keppler-data-prepared.csv"
 
 
 def prepare_data():
@@ -19,95 +19,117 @@ def prepare_data():
     # delete CANDIDATES
     df = delete_candidates(df)
     # change hours to decimal degrees
-    df['ra_str'] = df['ra_str'].apply(convert_minutes_to_degrees)
-    df['dec_str'] = df['dec_str'].apply(convert_minutes_to_degrees)
+    df["ra_str"] = df["ra_str"].apply(convert_minutes_to_degrees)
+    df["dec_str"] = df["dec_str"].apply(convert_minutes_to_degrees)
     # change column names
-    df = df.rename(columns={'ra_str': 'ra'})
-    df = df.rename(columns={'dec_str': 'dec'})
+    df = df.rename(columns={"ra_str": "ra"})
+    df = df.rename(columns={"dec_str": "dec"})
     # fill empty cells
     df = fill_empty_cells(df)
     save_prepared_data(df)
 
+
 def save_prepared_data(df):
     df.to_csv(PREPARED_FILE_PATH, index=False, sep=",")
 
+
 def drop_unnecessary_columns(df):
-    df.drop([
-        # "kepoi_name", 
-        # "kepler_name", 
-        'koi_pdisposition', 
-        'koi_score',
-        'koi_tce_plnt_num', 
-        'koi_tce_delivname',
-        'koi_prad_err1',
-        'koi_prad_err2',
-        'koi_teq_err1',
-        'koi_teq_err2',
-        'koi_insol_err1',
-        'koi_insol_err2',
-        'koi_steff_err1',
-        'koi_steff_err2',
-        'koi_period_err1',
-        'koi_period_err2',
-        'koi_time0bk_err1',
-        'koi_time0bk_err2',
-        'koi_impact_err1',
-        'koi_impact_err2',
-        'koi_duration_err1',
-        'koi_duration_err2',
-        'koi_depth_err1',
-        'koi_depth_err2',
-        'koi_slogg_err1',
-        'koi_slogg_err2',
-        'koi_srad_err1',
-        'koi_srad_err2',
-        'koi_kepmag_err'
-        ], 
-        axis=1, inplace=True)
+    df.drop(
+        [
+            # "kepoi_name",
+            # "kepler_name",
+            "koi_pdisposition",
+            "koi_score",
+            "koi_tce_plnt_num",
+            "koi_tce_delivname",
+            "koi_prad_err1",
+            "koi_prad_err2",
+            "koi_teq_err1",
+            "koi_teq_err2",
+            "koi_insol_err1",
+            "koi_insol_err2",
+            "koi_steff_err1",
+            "koi_steff_err2",
+            "koi_period_err1",
+            "koi_period_err2",
+            "koi_time0bk_err1",
+            "koi_time0bk_err2",
+            "koi_impact_err1",
+            "koi_impact_err2",
+            "koi_duration_err1",
+            "koi_duration_err2",
+            "koi_depth_err1",
+            "koi_depth_err2",
+            "koi_slogg_err1",
+            "koi_slogg_err2",
+            "koi_srad_err1",
+            "koi_srad_err2",
+            "koi_kepmag_err",
+        ],
+        axis=1,
+        inplace=True,
+    )
     return df
 
+
 def get_prepared_data():
-    data =  pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
-    list_of_objects = [(DataVM(
-        row.kepid,
-        row.kepoi_name,
-        row.kepler_name,
-        row.koi_disposition,
-        row.koi_fpflag_nt,
-        row.koi_fpflag_ss,
-        row.koi_fpflag_co,
-        row.koi_fpflag_ec,
-        row.koi_period,
-        row.koi_time0bk,
-        row.koi_impact,
-        row.koi_duration,
-        row.koi_depth,
-        row.koi_prad,
-        row.koi_teq,
-        row.koi_insol,
-        row.koi_model_snr,
-        row.koi_steff,
-        row.koi_slogg,
-        row.koi_srad,
-        row.ra,
-        row.dec,
-        row.koi_kepmag,
-        )) for index, row in data.iterrows() ]  
+    data = pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
+    list_of_objects = [
+        (
+            DataVM(
+                row.kepid,
+                row.kepoi_name,
+                row.kepler_name,
+                row.koi_disposition,
+                row.koi_fpflag_nt,
+                row.koi_fpflag_ss,
+                row.koi_fpflag_co,
+                row.koi_fpflag_ec,
+                row.koi_period,
+                row.koi_time0bk,
+                row.koi_impact,
+                row.koi_duration,
+                row.koi_depth,
+                row.koi_prad,
+                row.koi_teq,
+                row.koi_insol,
+                row.koi_model_snr,
+                row.koi_steff,
+                row.koi_slogg,
+                row.koi_srad,
+                row.ra,
+                row.dec,
+                row.koi_kepmag,
+            )
+        )
+        for index, row in data.iterrows()
+    ]
     for item in list_of_objects:
         item = item.to_json()
     return list_of_objects
 
+
 def get_data_frame():
     df = pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
-    df.drop(['kepid', 'kepoi_name', 'kepler_name', 'koi_disposition'], axis=1, inplace=True)
+    df.drop(
+        ["kepid", "kepoi_name", "kepler_name", "koi_disposition"], axis=1, inplace=True
+    )
     return df
+
+
+def get_data_frame_to_classify():
+    df = pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
+    df.drop(["kepid", "kepoi_name", "kepler_name"], axis=1, inplace=True)
+    return df
+
 
 def delete_candidates(df):
     df = df[df.koi_disposition != "CANDIDATE"]
     return df
 
+
 def convert_minutes_to_degrees(value):
-    if value[:1] == '+':
+    if value[:1] == "+":
         degrees = value[1:3]
         minutes = value[4:6]
         seconds = value[7:9]
@@ -116,15 +138,16 @@ def convert_minutes_to_degrees(value):
         return decimal_degrees
     else:
         # change format 20h19m20s to 20:19:20
-        value = value.replace('m', ':')
-        value = value.replace('h', ':')
-        value = value.replace('s', ':')
+        value = value.replace("m", ":")
+        value = value.replace("h", ":")
+        value = value.replace("s", ":")
         # remove decimal part of seconds
-        value = value.split('.', 1)[0]
-        time = datetime.datetime.strptime(value, '%H:%M:%S')
+        value = value.split(".", 1)[0]
+        time = datetime.datetime.strptime(value, "%H:%M:%S")
         minutes_total = time.hour * 60 + time.minute + time.second / 60
         decimal_degrees = minutes_total / 60
         return decimal_degrees
+
 
 def fill_empty_cells(df):
     df.koi_fpflag_nt.fillna(randrange(1), inplace=True)
@@ -147,16 +170,20 @@ def fill_empty_cells(df):
     df.dec.fillna(df.dec.mean(), inplace=True)
     df.koi_kepmag.fillna(df.koi_kepmag.mean(), inplace=True)
     return df
-    
+
+
 def detect_outliers():
-    df =  pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
-    df.drop([
-        'kepid',
-        'koi_disposition',
-        'kepoi_name', 
-        'kepler_name', 
-        ], 
-        axis=1, inplace=True)
+    df = pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
+    df.drop(
+        [
+            "kepid",
+            "koi_disposition",
+            "kepoi_name",
+            "kepler_name",
+        ],
+        axis=1,
+        inplace=True,
+    )
     counter = 0
     for attr in df.columns:
         data = df[attr]

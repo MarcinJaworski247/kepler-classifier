@@ -1,18 +1,8 @@
 import json
 
+
 class StatsVM:
-    def __init__(
-        self,
-        _attribute,
-        _min,
-        _max,
-        _avg,
-        _stdv,
-        _median,
-        _iqr,
-        _q1,
-        _q3
-    ):
+    def __init__(self, _attribute, _min, _max, _avg, _stdv, _median, _iqr, _q1, _q3):
         self._attribute = _attribute
         self._min = _min
         self._max = _max
@@ -24,5 +14,4 @@ class StatsVM:
         self._q3 = _q3
 
     def to_json(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-            sort_keys=True, indent=4)
+        return json.dumps(self, default=lambda o: o.__dict__, sort_keys=True, indent=4)

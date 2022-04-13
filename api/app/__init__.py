@@ -4,14 +4,17 @@ from flask import Blueprint
 from .main.controller.data_controller import api as data_ns
 from .main.controller.stats_controller import api as stats_ns
 from .main.controller.plots_controller import api as plots_ns
+from .main.controller.classification_controller import api as classification_ns
 
-blueprint = Blueprint('api', __name__)
+blueprint = Blueprint("api", __name__)
 
-api = Api(blueprint,
-          title='Exoplanet classification Flask REST API',
-          version='1.0',
-          )
+api = Api(
+    blueprint,
+    title="Exoplanet classification Flask REST API",
+    version="1.0",
+)
 
-api.add_namespace(data_ns, path='/data')
-api.add_namespace(stats_ns, path='/stats')
-api.add_namespace(plots_ns, path='/plots')
+api.add_namespace(data_ns, path="/data")
+api.add_namespace(stats_ns, path="/stats")
+api.add_namespace(plots_ns, path="/plots")
+api.add_namespace(classification_ns, path="/classification")

@@ -7,18 +7,20 @@ api = DataDTO.api
 _data = DataDTO.data
 _outliers = DataDTO.outliers
 
-@api.route('/getPreparedData')
+
+@api.route("/getPreparedData")
 class DataList(Resource):
-    @api.doc('list_of_prepared_data')
-    @api.marshal_list_with(_data, envelope='data')
+    @api.doc("list_of_prepared_data")
+    @api.marshal_list_with(_data, envelope="data")
     def get(self):
         """List of preparedd data"""
         return get_prepared_data()
 
-@api.route('/getOutliers')
+
+@api.route("/getOutliers")
 class Outliers(Resource):
-    @api.doc('count_and_percentage_of_outliers')
-    @api.marshal_with(_outliers, envelope='outliers')
+    @api.doc("count_and_percentage_of_outliers")
+    @api.marshal_with(_outliers, envelope="outliers")
     def get(self):
         """Count and percentage of outliers"""
         return detect_outliers()

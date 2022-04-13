@@ -1,6 +1,6 @@
 import json
 
-class BoxPlotDataVM:
+class ValuesVM:
     def __init__(self, name, data):
         self.name = name
         self.data = data

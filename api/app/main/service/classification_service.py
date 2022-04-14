@@ -18,26 +18,22 @@ def get_classification_results(params):
     X = df.drop(labels=["koi_disposition"], axis=1)
 
     rf_acc, rf_balanced_acc = random_forest_classifier(
-        df, Y, X, params["testDataPercentage"] / 100, params["numberOfTrees"]
+        Y, X, params["testDataPercentage"] / 100, params["numberOfTrees"]
     )
     dt_acc, dt_balanced_acc = decision_tree_classifier(
-        df, Y, X, params["testDataPercentage"] / 100
+        Y, X, params["testDataPercentage"] / 100
     )
-    # svm_acc, svm_balanced_acc = svm_classifier(
-    #     df, Y, X, params["testDataPercentage"] / 100
-    # )
-    knn_acc, knn_balanced_acc = knn_classifier(
-        df, Y, X, params["testDataPercentage"] / 100
-    )
+    svm_acc, svm_balanced_acc = svm_classifier(Y, X, params["testDataPercentage"] / 100)
+    knn_acc, knn_balanced_acc = knn_classifier(Y, X, params["testDataPercentage"] / 100)
     return [
         ClassificationResponseVM("rf", rf_acc, rf_balanced_acc),
         ClassificationResponseVM("dt", dt_acc, dt_balanced_acc),
-        # ClassificationResponseVM("svm", svm_acc, svm_balanced_acc),
+        ClassificationResponseVM("svm", svm_acc, svm_balanced_acc),
         ClassificationResponseVM("knn", knn_acc, knn_balanced_acc),
     ]
 
 
-def random_forest_classifier(df, Y, X, testDataPercentage, numberOfTrees):
+def random_forest_classifier(Y, X, testDataPercentage, numberOfTrees):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
@@ -55,7 +51,7 @@ def random_forest_classifier(df, Y, X, testDataPercentage, numberOfTrees):
     return rf_accuracy, rf_balanced_accuracy
 
 
-def decision_tree_classifier(df, Y, X, testDataPercentage):
+def decision_tree_classifier(Y, X, testDataPercentage):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
@@ -73,13 +69,13 @@ def decision_tree_classifier(df, Y, X, testDataPercentage):
     return dt_accuracy, dt_balanced_accuracy
 
 
-def svm_classifier(df, Y, X, testDataPercentage):
+def svm_classifier(Y, X, testDataPercentage):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
-    model = svm.SVC(kernel="linear")
+    model = svm.LinearSVC()
     model.fit(X_train, Y_train)
 
     prediction = model.predict(X_test)
@@ -91,7 +87,7 @@ def svm_classifier(df, Y, X, testDataPercentage):
     return svm_accuracy, svm_balanced_score
 
 
-def knn_classifier(df, Y, X, testDataPercentage):
+def knn_classifier(Y, X, testDataPercentage):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20

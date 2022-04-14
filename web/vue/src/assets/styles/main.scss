@@ -1,0 +1,13 @@
+@import "./fonts";
+@import "./spacing";
+@import "./flex";
+html,
+body {
+  font-family: "Lato", sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  color: $dark-font;
+  background-color: $light-grey;
+  font-size: 14px;
+}

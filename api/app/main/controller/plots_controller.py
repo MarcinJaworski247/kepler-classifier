@@ -12,7 +12,7 @@ _values_data = ValuesDTO.data
 @api.route("/getPearsonCorr")
 class PearsonCorrList(Resource):
     @api.doc("list_of_pearson_correlations")
-    @api.marshal_list_with(_data, envelope="pearson_corr")
+    @api.marshal_list_with(_data, envelope="data")
     def get(self):
         """List of pearson correlation between attributes"""
         return get_pearson_corr()
@@ -21,7 +21,7 @@ class PearsonCorrList(Resource):
 @api.route("/getValues")
 class BoxPlotData(Resource):
     @api.doc("list_of_attributes_with_values")
-    @api.marshal_list_with(_values_data, envelope="values")
+    @api.marshal_list_with(_values_data, envelope="data")
     def get(self):
         """List of atributes data to box plots"""
         return get_values()

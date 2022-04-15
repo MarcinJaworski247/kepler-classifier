@@ -4,7 +4,7 @@ from flask_restx import fields, Namespace
 class ClassificationResponseDTO:
     api = Namespace("classification")
     data = api.model(
-        "classification_reponse",
+        "data",
         {
             "method": fields.String,
             "accuracy": fields.Float,

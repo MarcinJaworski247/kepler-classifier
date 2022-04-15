@@ -20,7 +20,7 @@ class DataList(Resource):
 @api.route("/getOutliers")
 class Outliers(Resource):
     @api.doc("count_and_percentage_of_outliers")
-    @api.marshal_with(_outliers, envelope="outliers")
+    @api.marshal_with(_outliers, envelope="data")
     def get(self):
         """Count and percentage of outliers"""
         return detect_outliers()

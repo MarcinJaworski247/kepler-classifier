@@ -13,7 +13,7 @@ _response = ClassificationResponseDTO.data
 @api.route("/getClassificationResult")
 class DataList(Resource):
     @api.doc("results_of_classification_process")
-    @api.marshal_list_with(_response, envelope="response")
+    @api.marshal_list_with(_response, envelope="data")
     @api.expect(_params)
     def get(self):
         """Results of classification process"""

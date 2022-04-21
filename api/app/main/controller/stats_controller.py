@@ -10,7 +10,7 @@ _data = StatsDTO.data
 @api.route("/getDescriptionStats")
 class StatsList(Resource):
     @api.doc("list_of_description_stats")
-    @api.marshal_list_with(_data, envelope="data")
+    @api.marshal_list_with(_data)
     def get(self):
         """List of description stats"""
         return get_description_stats()

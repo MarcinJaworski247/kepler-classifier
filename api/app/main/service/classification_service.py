@@ -1,4 +1,4 @@
-from sklearn.model_selection import train_test_split
+from sklearn.model_selection import cross_validate, train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import svm
@@ -10,6 +10,7 @@ from app.main.util.classification_response_vm import ClassificationResponseVM
 
 
 def get_classification_results(params):
+
     df = get_data_frame_to_classify()
     # class variable
     Y = df.koi_disposition.values
@@ -18,28 +19,37 @@ def get_classification_results(params):
     X = df.drop(labels=["koi_disposition"], axis=1)
 
     rf_acc, rf_balanced_acc = random_forest_classifier(
-        Y, X, params["testDataPercentage"] / 100, params["numberOfTrees"]
+        Y, X, int(params.testDataPercentage) /
+        100, int(params.treesCount), params.isCrossValidation, params.foldsCount
     )
     dt_acc, dt_balanced_acc = decision_tree_classifier(
-        Y, X, params["testDataPercentage"] / 100
+        Y, X, int(params.testDataPercentage) /
+        100, params.isCrossValidation, params.foldsCount
     )
-    svm_acc, svm_balanced_acc = svm_classifier(Y, X, params["testDataPercentage"] / 100)
-    knn_acc, knn_balanced_acc = knn_classifier(Y, X, params["testDataPercentage"] / 100)
+    svm_acc, svm_balanced_acc = svm_classifier(
+        Y, X, int(params.testDataPercentage) / 100, params.isCrossValidation, params.foldsCount)
+    knn_acc, knn_balanced_acc = knn_classifier(
+        Y, X, int(params.testDataPercentage) / 100, params.neighboursCount, params.isCrossValidation, params.foldsCount)
+
     return [
-        ClassificationResponseVM("rf", rf_acc, rf_balanced_acc),
-        ClassificationResponseVM("dt", dt_acc, dt_balanced_acc),
-        ClassificationResponseVM("svm", svm_acc, svm_balanced_acc),
-        ClassificationResponseVM("knn", knn_acc, knn_balanced_acc),
+        ClassificationResponseVM("Random forest", round(
+            rf_acc, 4), round(rf_balanced_acc, 4)),
+        ClassificationResponseVM("Decision tree", round(
+            dt_acc, 4), round(dt_balanced_acc, 4)),
+        ClassificationResponseVM(
+            "Support Vector Machine", round(svm_acc, 4), round(svm_balanced_acc, 4)),
+        ClassificationResponseVM(
+            "K-nearest neighbours", round(knn_acc, 4), round(knn_balanced_acc, 4)),
     ]
 
 
-def random_forest_classifier(Y, X, testDataPercentage, numberOfTrees):
+def random_forest_classifier(Y, X, testDataPercentage, treesCount, isCrossValidation, foldsCount):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
-    model = RandomForestClassifier(n_estimators=numberOfTrees)
+    model = RandomForestClassifier(n_estimators=treesCount)
     model.fit(X_train, Y_train)
 
     prediction = model.predict(X_test)
@@ -51,7 +61,7 @@ def random_forest_classifier(Y, X, testDataPercentage, numberOfTrees):
     return rf_accuracy, rf_balanced_accuracy
 
 
-def decision_tree_classifier(Y, X, testDataPercentage):
+def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
@@ -69,7 +79,7 @@ def decision_tree_classifier(Y, X, testDataPercentage):
     return dt_accuracy, dt_balanced_accuracy
 
 
-def svm_classifier(Y, X, testDataPercentage):
+def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
@@ -87,19 +97,20 @@ def svm_classifier(Y, X, testDataPercentage):
     return svm_accuracy, svm_balanced_score
 
 
-def knn_classifier(Y, X, testDataPercentage):
+def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation, foldsCount):
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
-    model = KNeighborsClassifier(n_neighbors=3)
+    model = KNeighborsClassifier(n_neighbors=int(neighboursCount))
+
     model.fit(X_train, Y_train)
 
     prediction = model.predict(X_test)
 
     # model metrics
-    knn_accuracy = metrics.accuracy_score(Y_test, prediction)
-    knn_balanced_accuracy = metrics.balanced_accuracy_score(Y_test, prediction)
+    accuracy = metrics.accuracy_score(Y_test, prediction)
+    balanced_accuracy = metrics.balanced_accuracy_score(Y_test, prediction)
 
-    return knn_accuracy, knn_balanced_accuracy
+    return accuracy, balanced_accuracy

@@ -1,7 +1,27 @@
 <template>
-  <div>visualization</div>
+  <app-header text="Współczynniki korelacji Pearsona" />
+  <heat-map v-if="pearsonCorrData.length" :data="pearsonCorrData" />
+  <app-loader v-else />
 </template>
 
-<script setup></script>
+<script setup>
+// vue
+import { ref } from "vue";
+// components
+import HeatMap from "@/components/Plots/HeatMap.vue";
+import AppLoader from "@/components/App/AppLoader.vue";
+import AppHeader from "@/components/App/AppHeader.vue";
+// api service
+import api from "@/api";
 
-<style></style>
+let pearsonCorrData = ref([]);
+// let valuesData = ref([]);
+
+api.getPearsonCorr().then((res) => {
+  pearsonCorrData.value = res.data;
+});
+
+// api.getValues().then((res) => {
+//   valuesData.value = res.data[10].data;
+// });
+</script>

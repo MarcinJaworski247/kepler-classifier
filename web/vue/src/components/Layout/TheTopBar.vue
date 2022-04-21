@@ -3,7 +3,7 @@
     <div class="bar d-flex space-between align-center">
       <router-link
         :to="{ name: 'data' }"
-        class="bar__item"
+        class="bar__item ml-5"
         :class="{ 'bar__item--active': routeActive('data') }"
       >
         Dane
@@ -24,7 +24,7 @@
       </router-link>
       <router-link
         :to="{ name: 'classification' }"
-        class="bar__item"
+        class="bar__item mr-5"
         :class="{ 'bar__item--active': routeActive('classification') }"
       >
         Klasyfikacja
@@ -44,13 +44,18 @@ function routeActive(param) {
 
 <style lang="scss" scoped>
 .bar {
-  width: 100%;
-  height: 80px;
+  height: 60px;
+  width: 800px;
 
   &__wrapper {
-    padding-left: 4 * $space-size;
-    padding-right: 4 * $space-size;
     background: $purple;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    overflow: hidden;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
   }
 
   &__item {

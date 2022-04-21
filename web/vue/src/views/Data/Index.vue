@@ -1,14 +1,121 @@
 <template>
-  <div>data</div>
+  <data-grid
+    v-if="data.length"
+    theme="compact"
+    :rows="data"
+    :columns="columns"
+    :height="600"
+  />
+  <app-loader v-else />
 </template>
 
 <script setup>
-import { onMounted, ref } from "vue";
+// vue
+import { reactive, ref } from "vue";
+// components
+import DataGrid from "../../components/App/AppDataGrid.vue";
+import AppLoader from "@/components/App/AppLoader.vue";
+// api service
 import api from "@/api";
 
-let data = ref(null);
+let data = ref([]);
 
-onMounted(async () => {
-  data = await api.getData();
+const columns = reactive([
+  {
+    prop: "kepid",
+    name: "kepid",
+  },
+  {
+    prop: "kepoi_name",
+    name: "kepoi_name",
+  },
+  {
+    prop: "kepler_name",
+    name: "kepler_name",
+  },
+  {
+    prop: "koi_disposition",
+    name: "koi_disposition",
+  },
+  {
+    prop: "koi_fpflag_nt",
+    name: "koi_fpflag_nt",
+  },
+  {
+    prop: "koi_fpflag_ss",
+    name: "koi_fpflag_ss",
+  },
+  {
+    prop: "koi_fpflag_co",
+    name: "koi_fpflag_co",
+  },
+  {
+    prop: "koi_fpflag_ec",
+    name: "koi_fpflag_ec",
+  },
+  {
+    prop: "koi_period",
+    name: "koi_period",
+  },
+  {
+    prop: "koi_time0bk",
+    name: "koi_time0bk",
+  },
+  {
+    prop: "koi_impact",
+    name: "koi_impact",
+  },
+  {
+    prop: "koi_duration",
+    name: "koi_duration",
+  },
+  {
+    prop: "koi_depth",
+    name: "koi_depth",
+  },
+  {
+    prop: "koi_prad",
+    name: "koi_prad",
+  },
+  {
+    prop: "koi_teq",
+    name: "koi_teq",
+  },
+  {
+    prop: "koi_insol",
+    name: "koi_insol",
+  },
+  {
+    prop: "koi_model_snr",
+    name: "koi_model_snr",
+  },
+  {
+    prop: "koi_steff",
+    name: "koi_steff",
+  },
+  {
+    prop: "koi_slogg",
+    name: "koi_slogg",
+  },
+  {
+    prop: "koi_srad",
+    name: "koi_srad",
+  },
+  {
+    prop: "ra",
+    name: "ra",
+  },
+  {
+    prop: "dec",
+    name: "dec",
+  },
+  {
+    prop: "koi_kepmag",
+    name: "koi_kepmag",
+  },
+]);
+
+api.getData().then((res) => {
+  data.value = res.data;
 });
 </script>

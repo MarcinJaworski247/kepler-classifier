@@ -1,6 +1,6 @@
 <template>
   <app-header v-if="title" :text="title" />
-  <div id="boxplot"></div>
+  <div id="histogram"></div>
 </template>
 
 <script setup>
@@ -33,7 +33,7 @@ watch(
   () => [...data.value],
   (newVal) => {
     if (newVal) {
-      renderBoxPlot(newVal);
+      renderHistogram(newVal);
     }
   },
   {
@@ -41,11 +41,12 @@ watch(
   }
 );
 
-function renderBoxPlot(data) {
-  Plotly.newPlot("boxplot", [
+function renderHistogram(data) {
+  Plotly.newPlot("histogram", [
     {
-      y: data,
-      type: "box",
+      x: data,
+      type: "histogram",
+      histnorm: "probability",
       name: name.value,
     },
   ]);

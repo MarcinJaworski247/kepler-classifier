@@ -2,14 +2,13 @@
   <select v-model="selectedOption">
     <option v-for="(opt, idx) in options" :key="idx">{{ opt }}</option>
   </select>
-  <box-plot :name="data.name" :data="data.data" />
+  <histogram :name="data.name" :data="data.data" />
 </template>
-
 <script setup>
 // vue
 import { ref, watch } from "vue";
 // components
-import BoxPlot from "@/components/Plots/BoxPlot.vue";
+import Histogram from "@/components/Plots/Histogram.vue";
 // api service
 import api from "@/api";
 

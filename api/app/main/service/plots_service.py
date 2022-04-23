@@ -25,10 +25,7 @@ def get_pearson_corr():
     return result
 
 
-def get_values():
+def get_values(attribute):
     df = get_data_frame()
-    result = []
-    for col in df.columns:
-        result.append(ValuesVM(col, df[col].values))
-
-    return result
+    res = ValuesVM(attribute, df[attribute].values)
+    return res

@@ -13,6 +13,7 @@
     "apexcharts": "^3.35.0",
     "axios": "^0.26.1",
     "material-icons": "^1.10.8",
+    "plotly.js-dist-min": "^2.11.1",
     "vue": "^3.2.25",
     "vue-router": "^4.0.14",
     "vue3-apexcharts": "^1.4.1"

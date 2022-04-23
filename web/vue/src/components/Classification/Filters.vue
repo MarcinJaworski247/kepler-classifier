@@ -16,7 +16,7 @@
         :train-data-percentage="trainDataPercentage"
       />
     </div>
-    <div class="filters__item">
+    <!-- <div class="filters__item">
       <div class="d-flex flex-column">
         <label class="filters__item__header">Walidacja krosowa</label>
         <Toggle v-model="filters.isCrossValidation" />
@@ -25,7 +25,7 @@
           <input type="number" min="2" max="20" v-model="filters.foldsCount" />
         </template>
       </div>
-    </div>
+    </div> -->
     <div class="filters__item">
       <div class="d-flex flex-column">
         <label class="filters__item__header">Ilość drzew w lesie losowym</label>

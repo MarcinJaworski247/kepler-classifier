@@ -1,3 +1,4 @@
+from flask import request
 from flask_restx import Resource
 from flask_restx import Namespace
 from app.main.service.plots_service import get_pearson_corr, get_values
@@ -24,4 +25,7 @@ class BoxPlotData(Resource):
     @api.marshal_list_with(_values_data)
     def get(self):
         """List of atributes data to box plots"""
-        return get_values()
+
+        attribute = request.args.get("attribute", "")
+
+        return get_values(attribute)

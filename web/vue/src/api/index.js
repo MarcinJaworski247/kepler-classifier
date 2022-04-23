@@ -10,8 +10,12 @@ class ApiService {
   getPearsonCorr() {
     return axios.get("/plots/getPearsonCorr");
   }
-  getValues() {
-    return axios.get("/plots/getValues");
+  getValues(attribute) {
+    return axios.get("/plots/getValues", {
+      params: {
+        attribute,
+      },
+    });
   }
   getClassificationResult(_params) {
     return axios.get("/classification/getClassificationResult", {

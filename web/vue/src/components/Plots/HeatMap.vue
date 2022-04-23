@@ -1,5 +1,5 @@
 <template>
-  <apexchart :height="550" :options="options" :series="dataRef" />
+  <apexchart :height="550" :options="options" :series="series" />
 </template>
 
 <script setup>
@@ -20,5 +20,5 @@ const options = reactive({
   colors: ["#008FFB"],
 });
 
-const dataRef = toRef(props, "data");
+const series = toRef(props, "data");
 </script>

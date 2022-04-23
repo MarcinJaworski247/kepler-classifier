@@ -1,27 +1,12 @@
 <template>
   <app-header text="Współczynniki korelacji Pearsona" />
-  <heat-map v-if="pearsonCorrData.length" :data="pearsonCorrData" />
-  <app-loader v-else />
+  <heat-map-wrapper />
+  <app-header text="Wykresy pudełkowe" />
+  <box-plots-wrapper />
 </template>
 
 <script setup>
-// vue
-import { ref } from "vue";
-// components
-import HeatMap from "@/components/Plots/HeatMap.vue";
-import AppLoader from "@/components/App/AppLoader.vue";
 import AppHeader from "@/components/App/AppHeader.vue";
-// api service
-import api from "@/api";
-
-let pearsonCorrData = ref([]);
-// let valuesData = ref([]);
-
-api.getPearsonCorr().then((res) => {
-  pearsonCorrData.value = res.data;
-});
-
-// api.getValues().then((res) => {
-//   valuesData.value = res.data[10].data;
-// });
+import BoxPlotsWrapper from "@/components/Classification/BoxPlotsWrapper.vue";
+import HeatMapWrapper from "@/components/Classification/HeatMapWrapper.vue";
 </script>

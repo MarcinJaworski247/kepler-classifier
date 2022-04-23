@@ -5,6 +5,7 @@
     :rows="data"
     :columns="columns"
     :height="600"
+    class="mb-4"
   />
   <app-loader v-else />
 </template>

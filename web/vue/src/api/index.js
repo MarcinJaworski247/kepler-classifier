@@ -28,6 +28,14 @@ class ApiService {
       },
     });
   }
+  getSimpleLinearRegression(attr1, attr2) {
+    return axios.get("/plots/getSimpleLinearRegression", {
+      params: {
+        firstAttribute: attr1,
+        secondAttribute: attr2,
+      },
+    });
+  }
 }
 
 export default new ApiService();

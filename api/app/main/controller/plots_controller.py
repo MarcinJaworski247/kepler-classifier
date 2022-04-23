@@ -1,7 +1,7 @@
-from flask import request
+from flask import request, jsonify
 from flask_restx import Resource
 from flask_restx import Namespace
-from app.main.service.plots_service import get_pearson_corr, get_values
+from app.main.service.plots_service import get_pearson_corr, get_simple_linear_regression, get_values
 from app.main.util.plots.pearson_corr_dto import PearsonCorrDTO
 from app.main.util.plots.values_dto import ValuesDTO
 
@@ -29,3 +29,16 @@ class BoxPlotData(Resource):
         attribute = request.args.get("attribute", "")
 
         return get_values(attribute)
+
+
+@api.route("/getSimpleLinearRegression")
+class SimpleLinearRegression(Resource):
+    @api.doc("simple_linear_regression_of_two_attributes")
+    def get(self):
+        """Simple linear regression between two attributes"""
+
+        firstAttribute = request.args.get("firstAttribute", "")
+        secondAttribute = request.args.get("secondAttribute", "")
+
+        res = get_simple_linear_regression(firstAttribute, secondAttribute)
+        return res

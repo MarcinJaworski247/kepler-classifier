@@ -36,6 +36,12 @@ class ApiService {
       },
     });
   }
+  getClassInfo() {
+    return axios.get("/data/getClassInfo");
+  }
+  getOutliers() {
+    return axios.get("/data/getOutliers");
+  }
 }
 
 export default new ApiService();

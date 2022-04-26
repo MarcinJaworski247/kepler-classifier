@@ -35,3 +35,11 @@ class DataDTO:
     outliers = api.model(
         "outliers", {"count": fields.Integer, "percentage": fields.Float}
     )
+
+    class_info = api.model(
+        "class_info",
+        {
+            "candidates": fields.Integer,
+            "false_positives": fields.Integer
+        }
+    )

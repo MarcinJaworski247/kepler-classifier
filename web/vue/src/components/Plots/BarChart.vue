@@ -35,6 +35,16 @@ chartData.value.forEach((el) => {
   balanced_accuracy.push(el.balanced_accuracy);
 });
 
+const brier_score_loss = [];
+chartData.value.forEach((el) => {
+  brier_score_loss.push(el.brier_score_loss);
+});
+
+const f1_score = [];
+chartData.value.forEach((el) => {
+  f1_score.push(el.f1_score);
+});
+
 series.value.push({
   name: "Accuracy",
   data: accuracy,
@@ -43,6 +53,16 @@ series.value.push({
 series.value.push({
   name: "Balanced accuracy",
   data: balanced_accuracy,
+});
+
+series.value.push({
+  name: "Brier score loss",
+  data: brier_score_loss,
+});
+
+series.value.push({
+  name: "F1 score",
+  data: f1_score,
 });
 
 chartOptions.value = {

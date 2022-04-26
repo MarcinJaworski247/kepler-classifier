@@ -1,11 +1,12 @@
 from flask_restx import Resource
 
 from ..util.data_dto import DataDTO
-from ..service.data_service import detect_outliers, get_prepared_data
+from ..service.data_service import detect_outliers, get_class_info, get_prepared_data
 
 api = DataDTO.api
 _data = DataDTO.data
 _outliers = DataDTO.outliers
+_class_info = DataDTO.class_info
 
 
 @api.route("/getPreparedData")
@@ -24,3 +25,11 @@ class Outliers(Resource):
     def get(self):
         """Count and percentage of outliers"""
         return detect_outliers()
+
+
+@api.route("/getClassInfo")
+class ClassInfo(Resource):
+    @api.marshal_with(_class_info)
+    def get(self):
+        """Count of values 'candidate' and 'false positive' in class variable"""
+        return get_class_info()

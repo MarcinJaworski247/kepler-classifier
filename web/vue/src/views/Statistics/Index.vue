@@ -24,6 +24,7 @@ const columns = reactive([
   {
     prop: "_attribute",
     name: "Atrybut",
+    size: 200,
   },
   {
     prop: "_min",

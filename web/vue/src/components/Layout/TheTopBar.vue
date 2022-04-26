@@ -53,7 +53,7 @@ function routeActive(param) {
     position: fixed;
     top: 0;
     overflow: hidden;
-    z-index: 2;
+    z-index: 10;
     display: flex;
     justify-content: center;
   }

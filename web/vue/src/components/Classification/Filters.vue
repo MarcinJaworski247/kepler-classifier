@@ -1,6 +1,6 @@
 <template>
   <div class="filters">
-    <app-header text="Filtry" />
+    <app-header text="Konfiguracja" />
     <div class="filters__item">
       <div class="d-flex flex-column">
         <label class="filters__item__header">Procent danych testowych</label>
@@ -34,7 +34,9 @@
     </div>
     <div class="filters__item">
       <div class="d-flex flex-column">
-        <label class="filters__item__header">Ilość sąsiadów</label>
+        <label class="filters__item__header"
+          >Ilość sąsiadów w algorytmie KNN</label
+        >
         <input
           type="number"
           min="2"

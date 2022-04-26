@@ -11,8 +11,8 @@
 
 <script setup>
 import AppHeader from "@/components/App/AppHeader.vue";
-import BoxPlotsWrapper from "@/components/Classification/BoxPlotsWrapper.vue";
-import HeatMapWrapper from "@/components/Classification/HeatMapWrapper.vue";
-import HistogramsWrapper from "@/components/Classification/HistogramsWrapper.vue";
-import ScatterPlotsWrapper from "@/components/Classification/ScatterPlotsWrapper.vue";
+import BoxPlotsWrapper from "@/components/Visualization/BoxPlotsWrapper.vue";
+import HeatMapWrapper from "@/components/Visualization/HeatMapWrapper.vue";
+import HistogramsWrapper from "@/components/Visualization/HistogramsWrapper.vue";
+import ScatterPlotsWrapper from "@/components/Visualization/ScatterPlotsWrapper.vue";
 </script>

@@ -12,6 +12,8 @@
       :title="res.method"
       :accuracy="res.accuracy"
       :balanced-accuracy="res.balanced_accuracy"
+      :brier-score-loss="res.brier_score_loss"
+      :f1-score="res.f1_score"
     />
   </div>
   <div class="d-flex justify-center" v-if="data.length">
@@ -56,7 +58,16 @@ const resultColumns = ref([
   {
     prop: "balanced_accuracy",
     name: "Balanced accuracy",
-    size: 140,
+    size: 200,
+  },
+  {
+    prop: "brier_score_loss",
+    name: "Brier score loss",
+    size: 200,
+  },
+  {
+    prop: "f1_score",
+    name: "F1 score",
   },
 ]);
 </script>

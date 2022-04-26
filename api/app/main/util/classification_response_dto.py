@@ -9,5 +9,7 @@ class ClassificationResponseDTO:
             "method": fields.String,
             "accuracy": fields.Float,
             "balanced_accuracy": fields.Float,
+            "f1_score": fields.Float,
+            "brier_score_loss": fields.Float
         },
     )

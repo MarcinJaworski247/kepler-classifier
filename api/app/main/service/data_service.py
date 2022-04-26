@@ -2,7 +2,7 @@ import pandas as pd
 from random import randrange
 import datetime
 
-from app.main.util.data_vm import DataVM, OutliersVM
+from app.main.util.data_vm import ClassInfoVM, DataVM, OutliersVM
 
 ORIGINAL_FILE_PATH = "D:\keppler-classifier\keppler-data.csv"
 PREPARED_FILE_PATH = "D:\keppler-classifier\keppler-data-prepared.csv"
@@ -112,7 +112,7 @@ def get_prepared_data():
 def get_data_frame():
     df = pd.read_csv(PREPARED_FILE_PATH, delimiter=",")
     df.drop(
-        ["kepid", "kepoi_name", "kepler_name", "koi_disposition"], axis=1, inplace=True
+        ["kepid", "kepoi_name", "kepler_name"], axis=1, inplace=True
     )
     return df
 
@@ -199,3 +199,11 @@ def detect_outliers():
             if val < lower_range or val > upper_range:
                 counter = counter + 1
     return OutliersVM(counter, round(float(counter / len(df)), 2))
+
+
+def get_class_info():
+    df = get_data_frame()
+    print(df.columns)
+    candidates = df[df.koi_disposition == 1].shape[0]
+    false_positives = df[df.koi_disposition == 0].shape[0]
+    return ClassInfoVM(candidates, false_positives)

@@ -1,13 +1,22 @@
 <template>
-  <data-grid
-    v-if="data.length"
-    theme="compact"
-    :rows="data"
-    :columns="columns"
-    :height="600"
-    class="mb-4"
-  />
-  <app-loader v-else />
+  <div v-if="data.length" class="d-flex justify-center">
+    <data-grid
+      theme="compact"
+      :rows="data"
+      :columns="columns"
+      :height="600"
+      style="width: 80%"
+    />
+  </div>
+  <div v-else>
+    <app-loader />
+  </div>
+  <div class="d-flex justify-center mt-5 mb-2">
+    <outliers-info />
+  </div>
+  <div class="d-flex justify-center">
+    <class-info />
+  </div>
 </template>
 
 <script setup>
@@ -16,6 +25,8 @@ import { reactive, ref } from "vue";
 // components
 import DataGrid from "../../components/App/AppDataGrid.vue";
 import AppLoader from "@/components/App/AppLoader.vue";
+import OutliersInfo from "@/components/Data/OutliersInfo.vue";
+import ClassInfo from "@/components/Data/ClassInfo.vue";
 // api service
 import api from "@/api";
 

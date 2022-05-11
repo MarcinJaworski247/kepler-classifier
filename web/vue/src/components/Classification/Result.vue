@@ -22,7 +22,9 @@
         {{ f1Score }}
       </span>
     </div>
-    <button @click="classifyData">Użyj modelu do klasyfikacji</button>
+    <button @click="classifyData" class="custom-button">
+      Użyj modelu do klasyfikacji
+    </button>
   </div>
 </template>
 <script setup>
@@ -92,6 +94,22 @@ function classifyData() {
       border-left: 3px solid $purple;
       padding-left: $space-size;
     }
+  }
+}
+
+.button {
+  background: $purple;
+  border-radius: 5px;
+  border-style: none;
+  outline: none;
+  padding: $space-size $space-size;
+  cursor: pointer;
+  color: $white;
+  &:hover {
+    background-color: $light-purple;
+  }
+  &:focus {
+    background-color: $light-purple;
   }
 }
 </style>

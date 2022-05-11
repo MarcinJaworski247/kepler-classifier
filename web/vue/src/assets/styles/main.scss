@@ -1,6 +1,7 @@
 @import "./fonts";
 @import "./spacing";
 @import "./flex";
+@import "./inputs";
 
 html,
 body {
@@ -11,4 +12,23 @@ body {
   color: $dark-font;
   background-color: $light-grey;
   font-size: 14px;
+}
+
+// CUSTOM SCROLLBAR
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(235, 235, 235);
+}
+
+::-webkit-scrollbar-thumb {
+  background: grey;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: grey;
 }

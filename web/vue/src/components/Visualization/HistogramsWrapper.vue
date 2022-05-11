@@ -1,5 +1,5 @@
 <template>
-  <select v-model="selectedOption">
+  <select v-model="selectedOption" class="custom-select">
     <option v-for="(opt, idx) in options" :key="idx">{{ opt }}</option>
   </select>
   <histogram :name="data.name" :data="data.data" />

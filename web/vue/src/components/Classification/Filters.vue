@@ -9,6 +9,7 @@
           max="100"
           min="50"
           v-model="filters.testDataPercentage"
+          class="custom-input"
         />
       </div>
       <pie-chart
@@ -29,7 +30,13 @@
     <div class="filters__item">
       <div class="d-flex flex-column">
         <label class="filters__item__header">Ilość drzew w lesie losowym</label>
-        <input type="number" min="2" max="50" v-model="filters.treesCount" />
+        <input
+          type="number"
+          min="2"
+          max="50"
+          v-model="filters.treesCount"
+          class="custom-input"
+        />
       </div>
     </div>
     <div class="filters__item">
@@ -42,11 +49,12 @@
           min="2"
           max="20"
           v-model="filters.neighboursCount"
+          class="custom-input"
         />
       </div>
     </div>
     <div class="mt-2">
-      <button @click="classify">Wygeneruj wyniki</button>
+      <button class="custom-button" @click="classify">Wygeneruj wyniki</button>
     </div>
   </div>
 </template>

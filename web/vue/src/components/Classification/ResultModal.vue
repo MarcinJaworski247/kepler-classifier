@@ -175,6 +175,7 @@ const columns = reactive([
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 1000;
   }
 
   &__header {

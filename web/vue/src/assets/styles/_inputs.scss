@@ -1,0 +1,40 @@
+.custom-button {
+  background: $purple;
+  border-radius: 5px;
+  border-style: none;
+  outline: none;
+  padding: $space-size $space-size;
+  cursor: pointer;
+  color: $white;
+  &:hover {
+    background-color: $light-purple;
+  }
+  &:focus {
+    background-color: $light-purple;
+  }
+}
+
+.custom-input {
+  padding: $space-size $space-size;
+  &:focus {
+    outline-color: $purple;
+  }
+}
+
+.custom-select {
+  padding: $space-size $space-size;
+  color: $white;
+  background-color: $purple;
+  outline: none;
+  border-radius: 5px;
+  border-style: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: $light-purple;
+  }
+
+  &:focus {
+    background-color: $light-purple;
+  }
+}

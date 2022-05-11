@@ -9,7 +9,7 @@ PREPARED_FILE_PATH = "D:\keppler-classifier\keppler-data-prepared.csv"
 
 
 def prepare_data():
-    # read data from csv. skip first 31 rows which are just in informative purpose
+    # read data from csv
     df = pd.read_csv(ORIGINAL_FILE_PATH, delimiter=",")
     # drop not nesessary columns
     df = drop_unnecessary_columns(df)
@@ -203,7 +203,28 @@ def detect_outliers():
 
 def get_class_info():
     df = get_data_frame()
-    print(df.columns)
     candidates = df[df.koi_disposition == 1].shape[0]
     false_positives = df[df.koi_disposition == 0].shape[0]
     return ClassInfoVM(candidates, false_positives)
+
+
+def get_candidates():
+    df = pd.read_csv(ORIGINAL_FILE_PATH, delimiter=",")
+    df = drop_unnecessary_columns(df)
+    df = df[df.koi_disposition == "CANDIDATE"]
+    df["ra_str"] = df["ra_str"].apply(convert_minutes_to_degrees)
+    df["dec_str"] = df["dec_str"].apply(convert_minutes_to_degrees)
+    df = df.rename(columns={"ra_str": "ra"})
+    df = df.rename(columns={"dec_str": "dec"})
+    df = fill_empty_cells(df)
+    kepler_names = df.kepler_name
+    kepoi_names = df.kepoi_name
+    df.drop(
+        [
+            "kepid", "kepoi_name", "kepler_name", "koi_disposition"
+        ],
+        axis=1,
+        inplace=True,
+    )
+
+    return df, kepler_names, kepoi_names

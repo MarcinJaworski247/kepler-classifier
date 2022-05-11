@@ -14,15 +14,27 @@
       :balanced-accuracy="res.balanced_accuracy"
       :brier-score-loss="res.brier_score_loss"
       :f1-score="res.f1_score"
+      @classify="classifyData"
     />
   </div>
   <div class="d-flex justify-center" v-if="data.length">
     <div class="chart-section">
       <app-header text="Porównanie wyników" />
       <bar-chart :data="data" />
-      <app-data-grid :rows="data" :columns="resultColumns" class="ml-1" />
+      <app-data-grid
+        :rows="data"
+        :columns="resultColumns"
+        export-file-name="models_comparision"
+        class="ml-1"
+      />
     </div>
   </div>
+  <result-modal
+    :method="method"
+    :visible="modalVisible"
+    :data="classificationRes"
+    @close="onModalClose"
+  />
 </template>
 
 <script setup>
@@ -36,6 +48,7 @@ import Filters from "@/components/Classification/Filters.vue";
 import BarChart from "@/components/Plots/BarChart.vue";
 import AppHeader from "@/components/App/AppHeader.vue";
 import AppDataGrid from "@/components/App/AppDataGrid.vue";
+import ResultModal from "@/components/Classification/ResultModal.vue";
 
 let data = ref([]);
 
@@ -70,6 +83,26 @@ const resultColumns = ref([
     name: "F1 score",
   },
 ]);
+
+let classificationRes = ref([]);
+let method = ref("");
+let modalVisible = ref(false);
+
+function classifyData(_method) {
+  method.value = _method;
+  modalVisible.value = true;
+
+  api.classifyData(_method).then((res) => {
+    classificationRes.value = res.data;
+    classificationRes.value.forEach((el) => {
+      el.RESULT = el.RESULT === 1 ? "Jest exoplanetą" : "Nie jest exoplanetą";
+    });
+  });
+}
+
+function onModalClose() {
+  modalVisible.value = false;
+}
 </script>
 <style lang="scss" scoped>
 .chart-section {

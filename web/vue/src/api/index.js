@@ -42,6 +42,13 @@ class ApiService {
   getOutliers() {
     return axios.get("/data/getOutliers");
   }
+  classifyData(_method) {
+    return axios.get("/classification/classifyCandidates", {
+      params: {
+        method: _method,
+      },
+    });
+  }
 }
 
 export default new ApiService();

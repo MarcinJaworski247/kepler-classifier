@@ -3,6 +3,7 @@
     <app-data-grid
       v-if="data.length"
       theme="compact"
+      export-file-name="description_stats"
       :rows="data"
       :columns="columns"
       :height="600"

@@ -46,14 +46,14 @@
       </div>
     </div>
     <div class="mt-2">
-      <button @click="classify">Klasyfikuj</button>
+      <button @click="classify">Wygeneruj wyniki</button>
     </div>
   </div>
 </template>
 
 <script setup>
 // vue
-import { reactive, computed, onMounted } from "vue";
+import { reactive, computed } from "vue";
 // components
 import Toggle from "@vueform/toggle";
 import PieChart from "@/components/Plots/PieChart.vue";
@@ -76,10 +76,6 @@ let trainDataPercentage = computed(() => {
 function classify() {
   emits("classify", filters);
 }
-
-onMounted(() => {
-  emits("classify", filters);
-});
 </script>
 <style src="@vueform/toggle/themes/default.css"></style>
 <style lang="scss" scoped>

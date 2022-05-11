@@ -22,11 +22,16 @@
         {{ f1Score }}
       </span>
     </div>
+    <button @click="classifyData">Użyj modelu do klasyfikacji</button>
   </div>
 </template>
 <script setup>
 import { toRef } from "vue";
 import AppHeader from "../App/AppHeader.vue";
+// api service
+import api from "@/api";
+
+const emits = defineEmits(["classify"]);
 
 const props = defineProps({
   title: {
@@ -61,6 +66,10 @@ const accuracy = toRef(props, "accuracy");
 const balancedAccuracy = toRef(props, "balancedAccuracy");
 const brierScoreLoss = toRef(props, "brierScoreLoss");
 const f1Score = toRef(props, "f1Score");
+
+function classifyData() {
+  emits("classify", title.value);
+}
 </script>
 <style lang="scss" scoped>
 .result-tile {

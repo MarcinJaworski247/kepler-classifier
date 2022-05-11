@@ -45,10 +45,17 @@ const props = defineProps({
     required: false,
     default: true,
   },
+  exportFileName: {
+    type: String,
+    required: false,
+    default: "",
+  },
 });
 
 const rowsRef = toRef(props, "rows");
 const columnsRef = toRef(props, "columns");
+const fileNameRef = toRef(props, "exportFileName");
+
 const vGridRef = ref(null);
 
 function exportData() {
@@ -57,7 +64,9 @@ function exportData() {
     plugins.forEach((p) => {
       if (p.exportFile) {
         const exportPlugin = p;
-        exportPlugin.exportFile({ filename: "keppler-classification" });
+        exportPlugin.exportFile({
+          filename: fileNameRef.value ?? "kepler-classifier",
+        });
       }
     });
   });

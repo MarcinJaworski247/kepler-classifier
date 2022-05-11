@@ -4,9 +4,11 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
+from joblib import dump, load
 
-from app.main.service.data_service import get_data_frame_to_classify
+from app.main.service.data_service import get_candidates, get_data_frame_to_classify
 from app.main.util.classification_response_vm import ClassificationResponseVM
+from app.main.util.classification_results_vm import ClassificationResultsVM
 
 
 def get_classification_results(params):
@@ -60,6 +62,9 @@ def random_forest_classifier(Y, X, testDataPercentage, treesCount, isCrossValida
     rf_brier_score_loss = metrics.brier_score_loss(Y_test, prediction)
     rf_f1_score = metrics.f1_score(Y_test, prediction)
 
+    # save trained model to file
+    dump(model, "D:\keppler-classifier\\rf_model.joblib")
+
     return rf_accuracy, rf_balanced_accuracy, rf_brier_score_loss, rf_f1_score
 
 
@@ -80,6 +85,9 @@ def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsC
     dt_brier_score_loss = metrics.brier_score_loss(Y_test, prediction)
     dt_f1_score = metrics.f1_score(Y_test, prediction)
 
+    # save trained model to file
+    dump(model, "D:\keppler-classifier\\dt_model.joblib")
+
     return dt_accuracy, dt_balanced_accuracy, dt_brier_score_loss, dt_f1_score
 
 
@@ -99,6 +107,9 @@ def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
     svm_balanced_score = metrics.balanced_accuracy_score(Y_test, prediction)
     svm_brier_score_loss = metrics.brier_score_loss(Y_test, prediction)
     svm_f1_score = metrics.f1_score(Y_test, prediction)
+
+    # save trained model to file
+    dump(model, "D:\keppler-classifier\\svm_model.joblib")
 
     return svm_accuracy, svm_balanced_score, svm_brier_score_loss, svm_f1_score
 
@@ -121,4 +132,55 @@ def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation,
     brier_score_loss = metrics.brier_score_loss(Y_test, prediction)
     f1_score = metrics.f1_score(Y_test, prediction)
 
+    # save trained model to file
+    dump(model, "D:\keppler-classifier\\knn_model.joblib")
+
     return accuracy, balanced_accuracy, brier_score_loss, f1_score
+
+
+def classify_candidates(method):
+    df, kepler_names, kepoi_names = get_candidates()
+    model = None
+    if (method == "Random forest"):
+        model = load("D:\keppler-classifier\\rf_model.joblib")
+    elif (method == "Decision tree"):
+        model = load("D:\keppler-classifier\\dt_model.joblib")
+    elif (method == "Support Vector Machine"):
+        model = load("D:\keppler-classifier\\svm_model.joblib")
+    elif (method == "K-nearest neighbours"):
+        model = load("D:\keppler-classifier\\knn_model.joblib")
+
+    Y = model.predict(df)
+
+    df['RESULT'] = Y
+    df['kepler_name'] = kepler_names
+    df['kepoi_name'] = kepoi_names
+
+    list_of_results = [(ClassificationResultsVM(
+        row.kepler_name,
+        row.kepoi_name,
+        row.koi_fpflag_nt,
+        row.koi_fpflag_ss,
+        row.koi_fpflag_co,
+        row.koi_fpflag_ec,
+        round(row.koi_period, 4),
+        round(row.koi_time0bk, 4),
+        round(row.koi_impact, 4),
+        round(row.koi_duration, 4),
+        round(row.koi_depth, 4),
+        round(row.koi_prad, 2),
+        round(row.koi_teq, 4),
+        round(row.koi_insol, 4),
+        round(row.koi_model_snr, 4),
+        round(row.koi_steff, 4),
+        round(row.koi_slogg, 4),
+        round(row.koi_srad, 4),
+        round(row.ra, 4),
+        round(row.dec, 4),
+        round(row.koi_kepmag, 4),
+        row.RESULT
+    )) for index, row in df.iterrows()]
+
+    for item in list_of_results:
+        item = item.to_json()
+    return list_of_results

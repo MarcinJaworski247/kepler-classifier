@@ -2,6 +2,7 @@
   <div v-if="data.length" class="d-flex justify-center">
     <data-grid
       theme="compact"
+      export-file-name="kepler_prepared_data"
       :rows="data"
       :columns="columns"
       :height="600"
@@ -44,10 +45,12 @@ const columns = reactive([
   {
     prop: "kepler_name",
     name: "kepler_name",
+    size: 180,
   },
   {
     prop: "koi_disposition",
     name: "koi_disposition",
+    size: 180,
   },
   {
     prop: "koi_fpflag_nt",
@@ -129,5 +132,9 @@ const columns = reactive([
 
 api.getData().then((res) => {
   data.value = res.data;
+  data.value.forEach((el) => {
+    el.koi_disposition =
+      el.koi_disposition == 1 ? "CANDIDATE" : "FALSE POSITIVE";
+  });
 });
 </script>

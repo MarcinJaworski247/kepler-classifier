@@ -14,6 +14,7 @@
       :balanced-accuracy="res.balanced_accuracy"
       :brier-score-loss="res.brier_score_loss"
       :f1-score="res.f1_score"
+      :feature-importance="res.feature_importance"
       @classify="classifyData"
     />
   </div>
@@ -54,6 +55,7 @@ let data = ref([]);
 
 async function classify(_params) {
   api.getClassificationResult(_params).then((res) => {
+    console.log(res.data);
     data.value = res.data;
   });
 }

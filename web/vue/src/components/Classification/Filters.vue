@@ -17,16 +17,22 @@
         :train-data-percentage="trainDataPercentage"
       />
     </div>
-    <!-- <div class="filters__item">
+    <div class="filters__item">
       <div class="d-flex flex-column">
         <label class="filters__item__header">Walidacja krosowa</label>
-        <Toggle v-model="filters.isCrossValidation" />
+        <Toggle v-model="filters.isCrossValidation" class="toggle-purple" />
         <template v-if="filters.isCrossValidation">
           <label class="mt-1">Ilość foldów</label>
-          <input type="number" min="2" max="20" v-model="filters.foldsCount" />
+          <input
+            type="number"
+            min="2"
+            max="20"
+            v-model="filters.foldsCount"
+            class="custom-input"
+          />
         </template>
       </div>
-    </div> -->
+    </div>
     <div class="filters__item">
       <div class="d-flex flex-column">
         <label class="filters__item__header">Ilość drzew w lesie losowym</label>
@@ -107,5 +113,10 @@ function classify() {
       padding-left: $space-size;
     }
   }
+}
+
+.toggle-purple {
+  --toggle-bg-on: #a438fc;
+  --toggle-border-on: #a438fc;
 }
 </style>

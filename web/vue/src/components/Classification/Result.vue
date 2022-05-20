@@ -22,7 +22,18 @@
         {{ f1Score }}
       </span>
     </div>
-    <button @click="classifyData" class="custom-button">
+    <div class="result-tile__item">
+      <span class="result-tile__item__label">
+        Najistotniejsze atrybuty:
+        <template v-if="featureImp.length">
+          <div v-for="(item, index) in featureImp" class="mt-1">
+            {{ item.name }} - {{ item.value }}
+          </div>
+        </template>
+        <template v-else>-</template>
+      </span>
+    </div>
+    <button @click="classifyData" class="custom-button mt-2">
       Użyj modelu do klasyfikacji
     </button>
   </div>
@@ -61,6 +72,11 @@ const props = defineProps({
     required: false,
     default: 0,
   },
+  featureImportance: {
+    type: Array,
+    required: false,
+    default: () => [],
+  },
 });
 
 const title = toRef(props, "title");
@@ -68,6 +84,7 @@ const accuracy = toRef(props, "accuracy");
 const balancedAccuracy = toRef(props, "balancedAccuracy");
 const brierScoreLoss = toRef(props, "brierScoreLoss");
 const f1Score = toRef(props, "f1Score");
+const featureImp = toRef(props, "featureImportance");
 
 function classifyData() {
   emits("classify", title.value);

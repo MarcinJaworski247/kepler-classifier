@@ -3,6 +3,8 @@ from flask_restx import fields, Namespace
 
 class ClassificationResponseDTO:
     api = Namespace("classification")
+    feature_importance = api.model(
+        "feature_importance", {"name": fields.String, "value": fields.Float})
     data = api.model(
         "data",
         {
@@ -10,7 +12,8 @@ class ClassificationResponseDTO:
             "accuracy": fields.Float,
             "balanced_accuracy": fields.Float,
             "f1_score": fields.Float,
-            "brier_score_loss": fields.Float
+            "brier_score_loss": fields.Float,
+            "feature_importance": fields.List(fields.Nested(feature_importance))
         },
     )
 

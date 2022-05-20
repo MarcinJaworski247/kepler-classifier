@@ -5,9 +5,11 @@ from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 from joblib import dump, load
+import pandas as pd
+from sklearn.utils import resample
 
 from app.main.service.data_service import get_candidates, get_data_frame_to_classify
-from app.main.util.classification_response_vm import ClassificationResponseVM
+from app.main.util.classification_response_vm import ClassificationResponseVM, FeatureImportanceVM
 from app.main.util.classification_results_vm import ClassificationResultsVM
 
 
@@ -20,28 +22,28 @@ def get_classification_results(params):
     # independent variables
     X = df.drop(labels=["koi_disposition"], axis=1)
 
-    rf_acc, rf_balanced_acc, rf_brier, rf_f1 = random_forest_classifier(
+    rf_acc, rf_balanced_acc, rf_brier, rf_f1, rf_feat_imp = random_forest_classifier(
         Y, X, int(params.testDataPercentage) /
         100, int(params.treesCount), params.isCrossValidation, params.foldsCount
     )
-    dt_acc, dt_balanced_acc, dt_brier, dt_f1 = decision_tree_classifier(
+    dt_acc, dt_balanced_acc, dt_brier, dt_f1, dt_feat_imp = decision_tree_classifier(
         Y, X, int(params.testDataPercentage) /
         100, params.isCrossValidation, params.foldsCount
     )
-    svm_acc, svm_balanced_acc, svm_brier, svm_f1 = svm_classifier(
+    svm_acc, svm_balanced_acc, svm_brier, svm_f1, svm_feat_imp = svm_classifier(
         Y, X, int(params.testDataPercentage) / 100, params.isCrossValidation, params.foldsCount)
-    knn_acc, knn_balanced_acc, knn_brier, knn_f1 = knn_classifier(
+    knn_acc, knn_balanced_acc, knn_brier, knn_f1, knn_feat_imp = knn_classifier(
         Y, X, int(params.testDataPercentage) / 100, params.neighboursCount, params.isCrossValidation, params.foldsCount)
 
     return [
         ClassificationResponseVM("Random forest", round(
-            rf_acc, 4), round(rf_balanced_acc, 4), round(rf_brier, 4), round(rf_f1, 4)),
+            rf_acc, 4), round(rf_balanced_acc, 4), round(rf_brier, 4), round(rf_f1, 4), rf_feat_imp),
         ClassificationResponseVM("Decision tree", round(
-            dt_acc, 4), round(dt_balanced_acc, 4), round(dt_brier, 4), round(dt_f1, 4)),
+            dt_acc, 4), round(dt_balanced_acc, 4), round(dt_brier, 4), round(dt_f1, 4), dt_feat_imp),
         ClassificationResponseVM(
-            "Support Vector Machine", round(svm_acc, 4), round(svm_balanced_acc, 4), round(svm_brier, 4), round(svm_f1, 4)),
+            "Support Vector Machine", round(svm_acc, 4), round(svm_balanced_acc, 4), round(svm_brier, 4), round(svm_f1, 4), svm_feat_imp),
         ClassificationResponseVM(
-            "K-nearest neighbours", round(knn_acc, 4), round(knn_balanced_acc, 4), round(knn_brier, 4), round(knn_f1, 4)),
+            "K-nearest neighbours", round(knn_acc, 4), round(knn_balanced_acc, 4), round(knn_brier, 4), round(knn_f1, 4), knn_feat_imp),
     ]
 
 
@@ -65,7 +67,17 @@ def random_forest_classifier(Y, X, testDataPercentage, treesCount, isCrossValida
     # save trained model to file
     dump(model, "D:\keppler-classifier\\rf_model.joblib")
 
-    return rf_accuracy, rf_balanced_accuracy, rf_brier_score_loss, rf_f1_score
+    # feature importance
+    feature_list = list(X.columns)
+    feat_imp = []
+
+    for i in range(len(feature_list)):
+        feat_imp.append(FeatureImportanceVM(
+            feature_list[i], round(float(model.feature_importances_[i]), 5)))
+
+    feat_imp.sort(key=lambda x: x.value, reverse=True)
+
+    return rf_accuracy, rf_balanced_accuracy, rf_brier_score_loss, rf_f1_score, feat_imp[0:4]
 
 
 def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
@@ -88,7 +100,17 @@ def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsC
     # save trained model to file
     dump(model, "D:\keppler-classifier\\dt_model.joblib")
 
-    return dt_accuracy, dt_balanced_accuracy, dt_brier_score_loss, dt_f1_score
+    # feature importance
+    feature_list = list(X.columns)
+    feat_imp = []
+
+    for i in range(len(feature_list)):
+        feat_imp.append(FeatureImportanceVM(
+            feature_list[i], round(float(model.feature_importances_[i]), 5)))
+
+    feat_imp.sort(key=lambda x: x.value, reverse=True)
+
+    return dt_accuracy, dt_balanced_accuracy, dt_brier_score_loss, dt_f1_score, feat_imp[0:4]
 
 
 def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
@@ -111,7 +133,7 @@ def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
     # save trained model to file
     dump(model, "D:\keppler-classifier\\svm_model.joblib")
 
-    return svm_accuracy, svm_balanced_score, svm_brier_score_loss, svm_f1_score
+    return svm_accuracy, svm_balanced_score, svm_brier_score_loss, svm_f1_score, []
 
 
 def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation, foldsCount):
@@ -135,7 +157,7 @@ def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation,
     # save trained model to file
     dump(model, "D:\keppler-classifier\\knn_model.joblib")
 
-    return accuracy, balanced_accuracy, brier_score_loss, f1_score
+    return accuracy, balanced_accuracy, brier_score_loss, f1_score, []
 
 
 def classify_candidates(method):

@@ -15,6 +15,9 @@
   <div class="d-flex justify-center mt-5 mb-2">
     <outliers-info />
   </div>
+  <div class="d-flex justify-center mb-2">
+    <empty-cells-info />
+  </div>
   <div class="d-flex justify-center">
     <class-info />
   </div>
@@ -28,6 +31,7 @@ import DataGrid from "../../components/App/AppDataGrid.vue";
 import AppLoader from "@/components/App/AppLoader.vue";
 import OutliersInfo from "@/components/Data/OutliersInfo.vue";
 import ClassInfo from "@/components/Data/ClassInfo.vue";
+import EmptyCellsInfo from "@/components/Data/EmptyCellsInfo.vue";
 // api service
 import api from "@/api";
 

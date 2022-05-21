@@ -43,3 +43,7 @@ class DataDTO:
             "false_positives": fields.Integer
         }
     )
+
+    empty_cells = api.model(
+        "empty_cells", {"count": fields.Integer, "percentage": fields.Float}
+    )

@@ -79,7 +79,7 @@ let filters = reactive({
   isCrossValidation: false,
   treesCount: 10,
   testDataPercentage: 40,
-  foldsCount: null,
+  foldsCount: 10,
   neighboursCount: 3,
 });
 

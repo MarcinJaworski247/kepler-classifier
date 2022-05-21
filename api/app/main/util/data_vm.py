@@ -66,3 +66,9 @@ class ClassInfoVM:
     def __init__(self, candidates, false_positives):
         self.candidates = candidates
         self.false_positives = false_positives
+
+
+class EmptyCellsVM:
+    def __init__(self, count, percentage):
+        self.count = count
+        self.percentage = percentage

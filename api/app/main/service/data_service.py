@@ -1,8 +1,9 @@
 import pandas as pd
 from random import randrange
 import datetime
+import numpy as np
 
-from app.main.util.data_vm import ClassInfoVM, DataVM, OutliersVM
+from app.main.util.data_vm import ClassInfoVM, DataVM, EmptyCellsVM, OutliersVM
 
 ORIGINAL_FILE_PATH = "D:\keppler-classifier\keppler-data.csv"
 PREPARED_FILE_PATH = "D:\keppler-classifier\keppler-data-prepared.csv"
@@ -228,3 +229,24 @@ def get_candidates():
     )
 
     return df, kepler_names, kepoi_names
+
+
+def get_empty_cells():
+    df = pd.read_csv(ORIGINAL_FILE_PATH, delimiter=",")
+    df.drop(
+        [
+            "kepid",
+            "koi_disposition",
+            "kepoi_name",
+            "kepler_name",
+        ],
+        axis=1,
+        inplace=True,
+    )
+
+    cells_count = len(df) * len(df.columns)
+    empty_cells_count = 0
+    for array in np.where(pd.isnull(df)):
+        empty_cells_count = empty_cells_count + len(array)
+
+    return EmptyCellsVM(empty_cells_count, round(float(empty_cells_count/cells_count), 2))

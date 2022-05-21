@@ -23,7 +23,7 @@ class ApiService {
         isCrossValidation: _params.isCrossValidation,
         testDataPercentage: _params.testDataPercentage,
         treesCount: _params.treesCount,
-        foldsCount: _params.foldCount,
+        foldsCount: _params.foldsCount,
         neighboursCount: _params.neighboursCount,
       },
     });
@@ -48,6 +48,9 @@ class ApiService {
         method: _method,
       },
     });
+  }
+  getEmptyCells() {
+    return axios.get("/data/getEmptyCells");
   }
 }
 

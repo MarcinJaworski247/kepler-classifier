@@ -1,12 +1,13 @@
 from flask_restx import Resource
 
 from ..util.data_dto import DataDTO
-from ..service.data_service import detect_outliers, get_class_info, get_prepared_data
+from ..service.data_service import detect_outliers, get_class_info, get_empty_cells, get_prepared_data
 
 api = DataDTO.api
 _data = DataDTO.data
 _outliers = DataDTO.outliers
 _class_info = DataDTO.class_info
+_empty_cells = DataDTO.empty_cells
 
 
 @api.route("/getPreparedData")
@@ -33,3 +34,11 @@ class ClassInfo(Resource):
     def get(self):
         """Count of values 'candidate' and 'false positive' in class variable"""
         return get_class_info()
+
+
+@api.route("/getEmptyCells")
+class EmptyCells(Resource):
+    @api.marshal_with(_empty_cells)
+    def get(self):
+        """Count and percentage of empty cells in input data"""
+        return get_empty_cells()

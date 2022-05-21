@@ -55,7 +55,6 @@ let data = ref([]);
 
 async function classify(_params) {
   api.getClassificationResult(_params).then((res) => {
-    console.log(res.data);
     data.value = res.data;
   });
 }

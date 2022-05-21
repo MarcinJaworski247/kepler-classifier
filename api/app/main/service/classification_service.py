@@ -1,12 +1,12 @@
-from sklearn.model_selection import cross_validate, train_test_split
+from random import Random
+from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn import svm
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn import metrics
 from joblib import dump, load
-import pandas as pd
-from sklearn.utils import resample
+from sklearn.model_selection import KFold
 
 from app.main.service.data_service import get_candidates, get_data_frame_to_classify
 from app.main.util.classification_response_vm import ClassificationResponseVM, FeatureImportanceVM
@@ -48,14 +48,27 @@ def get_classification_results(params):
 
 
 def random_forest_classifier(Y, X, testDataPercentage, treesCount, isCrossValidation, foldsCount):
+
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
+    # classifier model init
     model = RandomForestClassifier(n_estimators=treesCount)
-    model.fit(X_train, Y_train)
 
+    # model fitting
+    if isCrossValidation:
+        kf = KFold(n_splits=int(foldsCount), shuffle=False)
+        for train_index, test_index in kf.split(X, Y):
+            X_split_train = X.iloc[train_index.tolist()]
+            Y_split_train = Y[train_index.tolist()]
+
+            model.fit(X_split_train, Y_split_train)
+    else:
+        model.fit(X_train, Y_train)
+
+    # test data predictions
     prediction = model.predict(X_test)
 
     # model metrics
@@ -81,14 +94,26 @@ def random_forest_classifier(Y, X, testDataPercentage, treesCount, isCrossValida
 
 
 def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
+
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
+    # classifier model init
     model = DecisionTreeClassifier()
-    model.fit(X_train, Y_train)
+    # model fitting
+    if isCrossValidation:
+        kf = KFold(n_splits=int(foldsCount), shuffle=False)
+        for train_index, test_index in kf.split(X, Y):
+            X_split_train = X.iloc[train_index.tolist()]
+            Y_split_train = Y[train_index.tolist()]
 
+            model.fit(X_split_train, Y_split_train)
+    else:
+        model.fit(X_train, Y_train)
+
+    # test data predictions
     prediction = model.predict(X_test)
 
     # model metrics
@@ -114,14 +139,27 @@ def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsC
 
 
 def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
+
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
+    # classifier model init
     model = svm.LinearSVC()
-    model.fit(X_train, Y_train)
 
+    # model fitting
+    if isCrossValidation:
+        kf = KFold(n_splits=int(foldsCount), shuffle=False)
+        for train_index, test_index in kf.split(X, Y):
+            X_split_train = X.iloc[train_index.tolist()]
+            Y_split_train = Y[train_index.tolist()]
+
+            model.fit(X_split_train, Y_split_train)
+    else:
+        model.fit(X_train, Y_train)
+
+    # test data predictions
     prediction = model.predict(X_test)
 
     # model metrics
@@ -137,15 +175,27 @@ def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
 
 
 def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation, foldsCount):
+
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=testDataPercentage, random_state=20
     )
 
+    # classifier model init
     model = KNeighborsClassifier(n_neighbors=int(neighboursCount))
 
-    model.fit(X_train, Y_train)
+    # model fitting
+    if isCrossValidation:
+        kf = KFold(n_splits=int(foldsCount), shuffle=False)
+        for train_index, test_index in kf.split(X, Y):
+            X_split_train = X.iloc[train_index.tolist()]
+            Y_split_train = Y[train_index.tolist()]
 
+            model.fit(X_split_train, Y_split_train)
+    else:
+        model.fit(X_train, Y_train)
+
+    # test data predictions
     prediction = model.predict(X_test)
 
     # model metrics

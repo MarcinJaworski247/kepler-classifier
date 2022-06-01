@@ -12,36 +12,28 @@ namespace WorkerService.Service
             HttpClient client = new HttpClient();
             return client;
         }
-        public static async void GetData(HttpClient client)
+        public static async void GetData(HttpClient client, string restApiUrl, string systemFolderUrl)
         {
-            //TODO: move URI to appsettings.json
-            const string URI = @"https://exoplanetarchive.ipac.caltech.edu/cgi-bin/nstedAPI/nph-nstedAPI?table=cumulative&format=json";
             List<Data> data = new List<Data>();
 
             try
             {
-                data = await client.GetFromJsonAsync<List<Data>>(URI);
+                data = await client.GetFromJsonAsync<List<Data>>(restApiUrl);
             } catch(Exception ex)
             {
                 Console.WriteLine(ex);
             }
 
-            SaveToCSV(data);
+            SaveToCSV(data, systemFolderUrl);
         }
-        internal static void SaveToCSV(List<Data> data)
+        internal static void SaveToCSV(List<Data> data, string systemFolderUrl)
         {
-            //TODO: move csv path to appsettings.json
-            string csvPath = @"D:\keppler-classifier\keppler-data.csv";
+            string csvPath = systemFolderUrl;
             if (data.Count > 0)
             {
-                using (var streamWriter = new StreamWriter(csvPath))
-                {
-                    //TODO: file operations permissions checking
-                    using (var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture))
-                    {
-                        csvWriter.WriteRecords(data);
-                    }
-                }
+                using var streamWriter = new StreamWriter(csvPath);
+                using var csvWriter = new CsvWriter(streamWriter, CultureInfo.InvariantCulture);
+                csvWriter.WriteRecords(data);
 
             }
         }

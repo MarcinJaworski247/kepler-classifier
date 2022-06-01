@@ -1,0 +1,3 @@
+sc.exe create KeplerClassifierService binpath="C:\Dev\kepler-classifier\service\WorkerService\WorkerService\bin\Release\net6.0\publish\WorkerService.exe"
+
+sc.exe start KeplerClassifierService

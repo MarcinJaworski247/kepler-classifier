@@ -1,5 +1,5 @@
 <template>
-  <select v-model="selectedOption" class="custom-select">
+  <select v-model="selectedOption" class="custom-input">
     <option v-for="(opt, idx) in options" :key="idx">{{ opt }}</option>
   </select>
   <box-plot :name="data.name" :data="data.data" />

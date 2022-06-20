@@ -25,39 +25,40 @@ const columns = reactive([
   {
     prop: "_attribute",
     name: "Atrybut",
-    size: 200,
+    size: 150,
   },
   {
     prop: "_min",
-    name: "min",
+    name: "Minimum",
   },
   {
     prop: "_max",
-    name: "max",
+    name: "Maximum",
   },
   {
     prop: "_avg",
-    name: "avg",
+    name: "Średnia",
   },
   {
     prop: "_stdv",
-    name: "stdv",
+    name: "Odchylenie standardowe",
+    size: 220,
   },
   {
     prop: "_median",
-    name: "mediana",
+    name: "Mediana",
   },
   {
     prop: "_iqr",
-    name: "iqr",
+    name: "IQR",
   },
   {
     prop: "_q1",
-    name: "q1",
+    name: "Q1",
   },
   {
     prop: "_q3",
-    name: "q3",
+    name: "Q3",
   },
 ]);
 

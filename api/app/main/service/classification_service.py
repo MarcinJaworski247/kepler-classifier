@@ -31,9 +31,9 @@ def get_classification_results(params):
         100, params.isCrossValidation, params.foldsCount
     )
     svm_acc, svm_balanced_acc, svm_brier, svm_f1, svm_feat_imp = svm_classifier(
-        Y, X, int(params.testDataPercentage) / 100, params.isCrossValidation, params.foldsCount)
+        Y, X, int(params.testDataPercentage) / 100, params.isCrossValidation, params.foldsCount, params.svcKernel)
     knn_acc, knn_balanced_acc, knn_brier, knn_f1, knn_feat_imp = knn_classifier(
-        Y, X, int(params.testDataPercentage) / 100, params.neighboursCount, params.isCrossValidation, params.foldsCount)
+        Y, X, int(params.testDataPercentage) / 100, params.neighboursCount, params.isCrossValidation, params.foldsCount, params.knnDistanceAlgorithm)
 
     return [
         ClassificationResponseVM("Random forest", round(
@@ -138,7 +138,7 @@ def decision_tree_classifier(Y, X, testDataPercentage, isCrossValidation, foldsC
     return dt_accuracy, dt_balanced_accuracy, dt_brier_score_loss, dt_f1_score, feat_imp[0:4]
 
 
-def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
+def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount, svcKernel):
 
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
@@ -146,7 +146,11 @@ def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
     )
 
     # classifier model init
-    model = svm.LinearSVC()
+    model = None
+    if (svcKernel == "linear"):
+        model = svm.LinearSVC(random_state=0, tol=1e-05)
+    else:
+        model = svm.SVC(kernel=svcKernel)
 
     # model fitting
     if isCrossValidation:
@@ -174,7 +178,7 @@ def svm_classifier(Y, X, testDataPercentage, isCrossValidation, foldsCount):
     return svm_accuracy, svm_balanced_score, svm_brier_score_loss, svm_f1_score, []
 
 
-def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation, foldsCount):
+def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation, foldsCount, knnDistanceAlgorithm):
 
     # split data into train and test datasets
     X_train, X_test, Y_train, Y_test = train_test_split(
@@ -182,7 +186,8 @@ def knn_classifier(Y, X, testDataPercentage, neighboursCount, isCrossValidation,
     )
 
     # classifier model init
-    model = KNeighborsClassifier(n_neighbors=int(neighboursCount))
+    model = KNeighborsClassifier(n_neighbors=int(
+        neighboursCount), algorithm=knnDistanceAlgorithm)
 
     # model fitting
     if isCrossValidation:

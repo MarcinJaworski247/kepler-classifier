@@ -23,9 +23,11 @@ class DataList(Resource):
         treesCount = request.args.get("treesCount", "")
         neighboursCount = request.args.get("neighboursCount", "")
         foldsCount = request.args.get("foldsCount", "")
+        svcKernel = request.args.get("svcKernel", "")
+        knnDistanceAlgorithm = request.args.get("knnDistanceAlgorithm", "")
 
         params = ClassificationParamsVM(
-            isCrossValidation, testDataPercentage, treesCount, neighboursCount, foldsCount)
+            isCrossValidation, testDataPercentage, treesCount, neighboursCount, foldsCount, svcKernel, knnDistanceAlgorithm)
 
         return get_classification_results(params)
 

@@ -24,6 +24,6 @@ let series = computed(() => {
 });
 
 const options = reactive({
-  labels: ["Test data", "Train data"],
+  labels: ["Dane testowe", "Dane uczące"],
 });
 </script>

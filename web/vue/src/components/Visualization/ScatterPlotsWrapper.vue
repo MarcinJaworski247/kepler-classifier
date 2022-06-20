@@ -1,10 +1,10 @@
 <template>
   <label class="mr-1">Atrybut 1</label>
-  <select v-model="firstOption" class="custom-select">
+  <select v-model="firstOption" class="custom-input">
     <option v-for="(opt, idx) in options" :key="idx">{{ opt }}</option>
   </select>
   <label class="ml-2 mr-1">Atrybut 2</label>
-  <select v-model="secondOption" class="custom-select">
+  <select v-model="secondOption" class="custom-input">
     <option v-for="(opt, idx) in options" :key="idx">{{ opt }}</option>
   </select>
   <scatter-plot

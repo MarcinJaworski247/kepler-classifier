@@ -7,7 +7,7 @@
         <input
           type="number"
           max="100"
-          min="50"
+          min="20"
           v-model="filters.testDataPercentage"
           class="custom-input"
         />
@@ -26,7 +26,7 @@
           <input
             type="number"
             min="2"
-            max="20"
+            max="50"
             v-model="filters.foldsCount"
             class="custom-input"
           />
@@ -53,10 +53,32 @@
         <input
           type="number"
           min="2"
-          max="20"
+          max="50"
           v-model="filters.neighboursCount"
           class="custom-input"
         />
+      </div>
+    </div>
+    <div class="filters__item">
+      <div class="d-flex flex-column">
+        <label class="filters__item__header"
+          >Algorytm użyty do obliczania odległości w algorytmie KNN</label
+        >
+        <select v-model="filters.knnDistanceAlgorithm" class="custom-input">
+          <option v-for="(opt, idx) in knnAlgorithms" :key="idx">
+            {{ opt }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="filters__item">
+      <div class="d-flex flex-column">
+        <label class="filters__item__header">Kernel algorytmu SVC</label>
+        <select v-model="filters.svcKernel" class="custom-input">
+          <option v-for="(opt, idx) in svcKernels" :key="idx">
+            {{ opt }}
+          </option>
+        </select>
       </div>
     </div>
     <div class="mt-2">
@@ -67,7 +89,7 @@
 
 <script setup>
 // vue
-import { reactive, computed } from "vue";
+import { reactive, computed, ref } from "vue";
 // components
 import Toggle from "@vueform/toggle";
 import PieChart from "@/components/Plots/PieChart.vue";
@@ -77,11 +99,17 @@ const emits = defineEmits(["classify"]);
 
 let filters = reactive({
   isCrossValidation: false,
-  treesCount: 10,
-  testDataPercentage: 40,
+  treesCount: 100,
+  testDataPercentage: 50,
   foldsCount: 10,
   neighboursCount: 3,
+  svcKernel: "rbf",
+  knnDistanceAlgorithm: "auto",
 });
+
+const knnAlgorithms = ref(["auto", "ball_tree", "kd_tree", "brute"]);
+
+const svcKernels = ref(["linear", "poly", "rbf", "sigmoid"]);
 
 let trainDataPercentage = computed(() => {
   return 100 - filters.testDataPercentage;

@@ -2,23 +2,29 @@
   <div class="d-flex justify-center mb-3">
     <filters @classify="classify" />
   </div>
-  <div
-    v-if="data.length"
-    v-for="(res, index) in data"
-    :key="index"
-    class="d-flex justify-center mb-3"
-  >
-    <result
-      :title="res.method"
-      :accuracy="res.accuracy"
-      :balanced-accuracy="res.balanced_accuracy"
-      :brier-score-loss="res.brier_score_loss"
-      :f1-score="res.f1_score"
-      :feature-importance="res.feature_importance"
-      @classify="classifyData"
-    />
-  </div>
-  <div class="d-flex justify-center" v-if="data.length">
+  <template v-if="!isLoading">
+    <template v-if="data.length">
+      <div
+        v-for="(res, index) in data"
+        :key="index"
+        class="d-flex justify-center mb-3"
+      >
+        <result
+          :title="res.method"
+          :accuracy="res.accuracy"
+          :balanced-accuracy="res.balanced_accuracy"
+          :brier-score-loss="res.brier_score_loss"
+          :f1-score="res.f1_score"
+          :feature-importance="res.feature_importance"
+          @classify="classifyData"
+        />
+      </div>
+    </template>
+  </template>
+  <template v-else>
+    <app-loader />
+  </template>
+  <div class="d-flex justify-center" v-if="data.length && !isLoading">
     <div class="chart-section">
       <app-header text="Porównanie wyników" />
       <bar-chart :data="data" />
@@ -50,12 +56,16 @@ import BarChart from "@/components/Plots/BarChart.vue";
 import AppHeader from "@/components/App/AppHeader.vue";
 import AppDataGrid from "@/components/App/AppDataGrid.vue";
 import ResultModal from "@/components/Classification/ResultModal.vue";
+import AppLoader from "@/components/App/AppLoader.vue";
 
 let data = ref([]);
+let isLoading = ref(false);
 
 async function classify(_params) {
+  isLoading.value = true;
   api.getClassificationResult(_params).then((res) => {
     data.value = res.data;
+    isLoading.value = false;
   });
 }
 

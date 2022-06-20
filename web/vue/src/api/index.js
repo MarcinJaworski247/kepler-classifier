@@ -25,6 +25,8 @@ class ApiService {
         treesCount: _params.treesCount,
         foldsCount: _params.foldsCount,
         neighboursCount: _params.neighboursCount,
+        knnDistanceAlgorithm: _params.knnDistanceAlgorithm,
+        svcKernel: _params.svcKernel,
       },
     });
   }
